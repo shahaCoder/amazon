@@ -24,11 +24,11 @@ export default function Home() {
       <h1 className="text-center text-6xl">CRM</h1>
       <div className="w-[30%] m-auto">
       <form onSubmit={(e) => getData(e)}>
-        <p>TITLE</p>
+        <p className="">TITLE</p>
         <input
           type="text"
           id="title"
-          className="w-[400px] h-[40px] rounded-md mb-10 text-black p-2"
+          className="w-[400px] h-[40px] rounded-md mb-10 text-black p-2 border-2"
           placeholder="Title"
           name="title"
         />
@@ -36,7 +36,7 @@ export default function Home() {
         <input
           type="number"
           id="price"
-          className="w-[400px] h-[40px] rounded-md mb-10 text-black p-2"
+          className="w-[400px] h-[40px] rounded-md mb-10 text-black p-2 border-2"
           placeholder="Price"
           name="price"
         />
@@ -44,7 +44,7 @@ export default function Home() {
         <input
           type="text"
           id="link"
-          className="w-[400px] h-[40px] rounded-md mb-10 text-black p-2"
+          className="w-[400px] h-[40px] rounded-md mb-10 text-black p-2 border-2"
           placeholder="Link"
           name="link"
         />

@@ -3,6 +3,7 @@ import { prisma } from '../prisma.js'
 
 export const createProduct = asyncHandler(async (req, res) => {
     const {title, img, price, link} = req.body
+    // console.log(req.file);
     try {
         const product = await prisma.product.create({
             data: {

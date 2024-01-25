@@ -12,7 +12,12 @@ import { A11y, Autoplay, Navigation, Pagination, Scrollbar } from 'swiper/module
 import { Cards } from './Cards';
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
-export const Recently: React.FC = () => {
+
+interface RecentlyProps {
+  data: any; 
+}
+
+export const Recently: React.FC<RecentlyProps> = ({ data }: any) => {
 const a: any = [1,2,3,4,5,6,7,8]
 const swiperRef = useRef<SwiperCore | any>(null);
 const [visible, setVisible] = React.useState<boolean>(false)
@@ -46,7 +51,7 @@ const [visible, setVisible] = React.useState<boolean>(false)
       }}
     >
         {
-            a.map((i: number, idx: number) => <SwiperSlide><Cards key={idx}  /></SwiperSlide>)
+            data?.map((i: number, idx: number) => <SwiperSlide><Cards key={idx} i={i}  /></SwiperSlide>)
         }
     </Swiper>
     </div>

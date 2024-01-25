@@ -5,14 +5,15 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 export default function Home() {
+  
   const [visible, setVisible] = useState<boolean>(false)
   const [value, setValue] = useState<string>()
-  const [products, setProducts] = useState<[] | any>()
+  const [products, setProducts] = useState<any>()
   useEffect(() => {
     if(!value){
       setVisible(false)
     }
-    fetch('http://localhost:3001/api/products')
+    fetch('http://localhost:3002/api/products')
     .then(res => res.json())
       .then(res => setProducts(res))
   }, [])
@@ -72,11 +73,11 @@ export default function Home() {
       </div>
       <section className="my-10">
         <h1 className="text-2xl font-bold mb-4">RECENTLY PUBLISHED PRODUCTS</h1>
-        <Recently />
+        <Recently data={products} />
       </section>
       <section className="my-10">
         <h1 className="text-2xl font-bold mb-4">ALL PRODUCTS</h1>
-        <Recently />
+        <Recently data={products} />
       </section>
     </div>
   );

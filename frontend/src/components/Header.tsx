@@ -8,7 +8,7 @@ export function Hedaer(props: IAppProps) {
          <h1>Amazon Finds</h1>
          <ul className="flex items-center gap-4">
             <li>Products</li>
-            <li>Contacts</li>
+            <li className="max-sm:hidden">Contacts</li>
          </ul>
       </header>
    );

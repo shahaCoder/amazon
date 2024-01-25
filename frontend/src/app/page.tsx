@@ -78,12 +78,9 @@ export default function Home() {
                <h1 className="text-[72px] max-2xl:text-6xl max-xl:text-5xl max-lg:text-4xl font-medium tracking-tighter leading-[70px]">
                   Best products <br className="max-sm:hidden" /> from Amazon
                </h1>
-               <div className="mt-2 max-xl:mt-1 text-2xl max-xl:text-xl max-lg:text-lg">
+               <div className="mt-2 max-xl:mt-1 max-sm:mb-14 text-2xl max-xl:text-xl max-lg:text-lg">
                   <h1>More than 100,000</h1>
                   <p>Products</p>
-               </div>
-               <div className="max-w-[200px] w-full m-auto sm:hidden block">
-                  <img alt="" src="./bezos.jpg" className="scale-125" />
                </div>
                <div className="bg-white max-w-xl w-full relative flex items-center justify-between mt-auto rounded-lg">
                   <input

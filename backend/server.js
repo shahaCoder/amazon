@@ -10,7 +10,7 @@ import multer from "multer"
 dotenv.config()
 const app = express()
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3002
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads");
@@ -23,16 +23,17 @@ const storage = multer.diskStorage({
 
 async function main() {
     if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
-    app.use(cors({ origin: 'http://localhost:3000', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    app.use(cors({ origin: ['http://localhost:3000', 'http://localhost:3001'], methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, }));
     app.use(express.json())
 
     const __dirname = path.resolve()
-    const upload = multer({storage: storage})
-    app.post('/uploads', upload.single('image'), (req, res) => {
-      res.json(req.img)
-    })
     app.use('/uploads', express.static(path.join(__dirname, '/uploads/')))
+
+    const upload = multer({storage: storage})
+    app.post('/uploads', upload.single('img'), (req, res) => {
+      res.json({filename: req.file.filename})
+    })
     app.use('/api/products', productRoutes)
 
     app.listen(

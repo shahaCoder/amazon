@@ -1,9 +1,11 @@
 import asyncHandler from 'express-async-handler'
+import  express  from "express"
 import { prisma } from '../prisma.js'
+// dotenv.config()
+// const app = express()
 
 export const createProduct = asyncHandler(async (req, res) => {
     const {title, img, price, link} = req.body
-    // console.log(req.file);
     try {
         const product = await prisma.product.create({
             data: {
@@ -56,9 +58,9 @@ export const deleteProduct = asyncHandler(async(req, res) => {
                     id: +req.params.id,
                 },
             });
-            res.json({message: 'Book deleted'});
+            res.json({message: 'Product deleted'});
         } catch (error) {
-            console.error('Error deleting book:', error);
+            console.error('Error deleting product:', error);
         }
     })
 

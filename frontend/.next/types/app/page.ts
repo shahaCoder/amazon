@@ -1,4 +1,4 @@
-// File: C:\Users\99890\Desktop\amazon2\frontend\src\app\page.tsx
+// File: /Users/shoxruxmac/Desktop/setup/amzn/amazon/frontend/src/app/page.tsx
 import * as entry from '../../../src/app/page.js'
 import type { ResolvingMetadata } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

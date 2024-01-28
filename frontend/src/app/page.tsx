@@ -1,6 +1,7 @@
 "use client";
 import { Cards } from "@/components/Cards";
 import { Recently } from "@/components/Recently";
+import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
@@ -52,23 +53,39 @@ const arr = [
 
 export default function Home() {
    const [visible, setVisible] = useState<boolean>(false);
-   const [value, setValue] = useState<string>();
-   const [products, setProducts] = useState<any>(arr);
+   const [value, setValue] = useState<string | any>('');
+   const [products, setProducts] = useState<any>();
+   const [products2, setProducts2] = useState<any>();
    useEffect(() => {
-      if (!value) {
+      if (value?.length < 1 || value == '') {
          setVisible(false);
       }
-      // fetch("http://localhost:3000/api/products")
-      //    .then((res) => res.json())
-      //    .then((res) => setProducts(res));
+      fetch("http://localhost:3002/api/products")
+         .then((res) => res.json())
+         .then((res) => setProducts(res));
    }, []);
-   console.log(products);
-
+   useEffect(() => {
+      if(value.trim() !== ''){
+         try {
+            fetch(`http://localhost:3002/api/products/title/${value.includes('#') ? value.replace('#', '%23') + value.slice(1, 0) : value}`)
+         .then((res) => res.json())
+         .then((res) =>  setProducts2(res));
+         } catch (error) {
+            console.log('Cannot find product:', error);
+         }
+      } else {
+         // setProducts2([])
+      }
+      if(value?.includes('#')){
+         console.log(value.replace('#', '%23') + value.slice(1, 0));
+      }
+   }, [value])
    const closeWindow = () => {
       setVisible(false);
    };
 
    return (
+      
       <div
          className="custom-container mt-10 max-md:mt-5 max-xs:mt-3"
          onClick={() => closeWindow()}
@@ -95,17 +112,21 @@ export default function Home() {
                   <div className="absolute right-2 top-2 max-lg:right-1 max-lg:top-1 p-2 rounded-lg select-none pointer-events-none bg-[#febd67]">
                      <IoIosSearch size={25} className="m-auto" />
                   </div>
-                  {visible ? (
+                  {visible && value.length > 0 ? (
                      <div
-                        className="w-full min-h-auto bg-white shadow-md rounded-lg mt-5 absolute top-14 left-0"
+                        className="w-full min-h-auto max-h-[300px] overflow-scroll bg-white z-10 shadow-md rounded-lg mt-5 absolute top-14 left-0"
                         onClick={(e: any) => e.stopPropagation()}
                      >
-                        <div className="w-full flex hover:bg-gray-200 items-center gap-4 p-4 rounded-t-md">
-                           <IoIosSearch size={"25px"} />
-                           <h1 className="font-medium">
-                              SUPER PUPER HAT FOR KIDS
+                        {
+                           products2?.length > 0 ? products2?.map((i: any) => <a href={i.link} key={i.id} className="w-full flex hover:bg-gray-200 items-center gap-4 p-4 rounded-t-md"> 
+                             <IoIosSearch size={"25px"} />
+                              <h1 key={i.id} className="text-sm font-medium truncate">
+                              {i.title}
                            </h1>
-                        </div>
+                           </a>) : <div className="w-full p-4 rounded-t-md">
+                           <h1>Sorry, we don't have this product.</h1>
+                           </div>
+                        }
                      </div>
                   ) : null}
                </div>

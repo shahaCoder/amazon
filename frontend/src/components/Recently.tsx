@@ -41,8 +41,9 @@ export const Recently: React.FC<RecentlyProps> = ({ data }: any) => {
       <div
          onMouseEnter={() => setVisible(true)}
          onMouseLeave={() => setVisible(false)}
+         key={data?.id}
       >
-         <Swiper
+         <Swiper key={data?.id}
             ref={swiperRef}
             // loop
             spaceBetween={25}
@@ -50,7 +51,7 @@ export const Recently: React.FC<RecentlyProps> = ({ data }: any) => {
             pagination={{ el: ".swiper-pagination", clickable: true }}
             scrollbar={{ el: ".swiper-scrollbar", hide: true }}
             slidesPerView={4}
-            style={{ padding: "12px 0" }}
+            style={{ padding: "12px 4px" }}
             breakpoints={{
                1140: {
                   slidesPerView: 4,
@@ -59,15 +60,19 @@ export const Recently: React.FC<RecentlyProps> = ({ data }: any) => {
                   slidesPerView: 3,
                   spaceBetween: 20,
                },
-               0: {
-                  spaceBetween: 10,
+               400: {
                   slidesPerView: 2,
+                  spaceBetween: 10,
+               },
+               0: {
+                  slidesPerView: 1,
+                  spaceBetween: 10,
                },
             }}
          >
-            {data?.map((i: number, idx: number) => (
-               <SwiperSlide>
-                  <Cards key={idx} i={i} />
+            {data?.map((i: any) => (
+               <SwiperSlide key={i.id}>
+                  <Cards key={i?.id} i={i} />
                </SwiperSlide>
             ))}
          </Swiper>

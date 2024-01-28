@@ -1,18 +1,18 @@
 import asyncHandler from 'express-async-handler'
-import  express  from "express"
 import { prisma } from '../prisma.js'
-// dotenv.config()
-// const app = express()
 
 export const createProduct = asyncHandler(async (req, res) => {
-    const {title, img, price, link} = req.body
+    const {title, img, price, link, lastPrice, uniCode} = req.body
     try {
+        const decodedUniCode = decodeURIComponent(uniCode);
         const product = await prisma.product.create({
             data: {
-                title,
+                title: title.toUpperCase(),
                 price: +price,
                 img,
-                link
+                link,
+                lastPrice: +lastPrice,
+                uniCode: decodedUniCode
             },
         });
         res.json(product);
@@ -32,7 +32,8 @@ export const getProducts = asyncHandler(async (req, res) => {
 })
 
 export const updateProduct = asyncHandler(async (req, res) => {
-    const {title, img, price, link} = req.body
+    const {title, img, price, link, lastPrice, uniCode} = req.body
+    const decodedUniCode = decodeURIComponent(uniCode);
     try {
         const product = await prisma.product.update({
             where: {
@@ -40,9 +41,11 @@ export const updateProduct = asyncHandler(async (req, res) => {
             },
             data: {
                 title,
-                price,
+                price: +price,
                 img,
-                link
+                link, 
+                lastPrice,
+                uniCode: decodedUniCode
             },
         });
         res.json(product);
@@ -64,18 +67,33 @@ export const deleteProduct = asyncHandler(async(req, res) => {
         }
     })
 
-    export const getProductById = asyncHandler(async (req, res) => {
-        const bookId = +req.params.id;
-    
+    export const getProductByTitle = asyncHandler(async (req, res) => {
+        const searchTerm = req.params.title.trim().toUpperCase();
+        if (!searchTerm) {
+            return res.status(400).json({ error: 'Parameter :title is required' });
+        }
         try {
-            const product = await prisma.product.findUnique({
+            const products = await prisma.product.findMany({
                 where: {
-                    id: bookId,
-                }
+                    OR: [
+                        {
+                            title: {
+                                startsWith: searchTerm,
+                                mode: 'insensitive', // Для поиска без учета регистра
+                            },
+                        },
+                        {
+                            uniCode: {
+                                startsWith: searchTerm,
+                                mode: 'insensitive', // Для поиска без учета регистра
+                            },
+                        },
+                    ],
+                },
             });
-                res.json(product);
+            res.json(products);
         } catch (error) {
-            console.error('Error getting product:', error);
+            console.error('Error getting products:', error);
             res.status(500).json({ error: error.message });
         }
     });

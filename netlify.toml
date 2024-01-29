@@ -1,3 +1,4 @@
 [build]
+base = "amazon"
 command = "npm run build"
 publish = "frontend/build"
